@@ -1,1 +1,13 @@
 # challenge_email_service
+
+
+DEBUG=0
+ENV_AWS_ACCESS_KEY_ID=...
+ENV_AWS_SECRET_ACCESS_KEY=...
+ENV_AWS_SES_REGION_NAME=eu-central-1
+ENV_AWS_SES_REGION_ENDPOINT=email.eu-central-1.amazonaws.com
+
+ENV_SENDGRID_API_KEY=...
+
+ENV_SPARKPOST_API_KEY=...
+

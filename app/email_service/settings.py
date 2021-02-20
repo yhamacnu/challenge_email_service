@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '9*e36533mwy$q8jqw5+uo99^v2=k08q309#pt%a8zwx*we3x@0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -118,3 +119,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+DEBUG = bool(os.environ.get("DEBUG", default=0))
+
+AWS_ACCESS_KEY_ID = os.environ.get("ENV_AWS_ACCESS_KEY_ID", "")
+AWS_SECRET_ACCESS_KEY = os.environ.get("ENV_AWS_SECRET_ACCESS_KEY", "")
+AWS_SES_REGION_NAME = os.environ.get("ENV_AWS_SES_REGION_NAME", "")
+AWS_SES_REGION_ENDPOINT = os.environ.get("ENV_AWS_SES_REGION_ENDPOINT", "")
+
+SENDGRID_API_KEY = os.environ.get("ENV_SENDGRID_API_KEY", "")
+
+SPARKPOST_API_KEY = os.environ.get("ENV_SPARKPOST_API_KEY", "")
