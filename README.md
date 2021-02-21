@@ -7,6 +7,7 @@ Dependencies are handled by the requirements.txt file: https://github.com/yhamac
 
 Almost, no effort has been invested/implemented in the frontend: https://github.com/yhamacnu/challenge_email_service/tree/main/app/mail/templates
 
-The request handler is implemented as a view function, that processes the email template form. Ther rudimentary failover is also handled there.
-Fail trigger of primary email(SparkPost) provider is simulated by having an account with an non-configured/non-verified sending domain, that reports code 7001 and raises SparkPostAPIException. 
+The request handler is implemented as a view function, that processes the email template form. 
+The failover is handled by the https://github.com/yhamacnu/challenge_email_service/blob/main/app/mail/failover.py module, which implements a rudimental responsibility chain mail send handler.
+Failover trigger of primary email(SparkPost) provider is simulated by having an account with an non-configured/non-verified sending domain, that reports code 7001 or raises SparkPostAPIException. 
 Backup provider is AWS SES.
