@@ -8,11 +8,14 @@ from django.conf import settings
 from sparkpost.exceptions import SparkPostAPIException
 from .forms import EmailForm
 
+
+SPARKPOST_BACKEND = "sparkpost.django.email_backend.SparkPostEmailBackend"
 SENDGRID_BACKEND = "sgbackend.SendGridBackend"
 SES_BACKEND = "django_ses.SESBackend"
 
 
-def email(request):
+def email(request, send_mail_connection=get_connection(SPARKPOST_BACKEND,
+                                        api_key=settings.SPARKPOST_API_KEY)):
     """
     Handles requests/responses for the mail app's EmailForm
     """
@@ -25,31 +28,20 @@ def email(request):
                          "subject": form.cleaned_data["subject"],
                          "message":form.cleaned_data["message"]}
             to_send = [email.strip() for email in mail_form["to"].split(";")]
-            send_success_cnt = 0
             try:
-                sendgrid_backend = get_connection(SENDGRID_BACKEND,
-                                                  api_key=settings.SENDGRID_API_KEY)
+                sparkpost_backend = get_connection(SPARKPOST_BACKEND,
+                                                   api_key=settings.SPARKPOST_API_KEY)
                 send_success_cnt = send_mail(mail_form["subject"],
                                              mail_form["message"],
                                              mail_form["from"],
                                              to_send,
-                                             connection=sendgrid_backend)
+                                             connection=send_mail_connection)
             except SparkPostAPIException:
-                # failover handling example, e.g. unconfigured sending domain code: 7001
-                ses_backend = get_connection("django_ses.SESBackend")
-                send_success_cnt = send_mail(mail_form["subject"],
-                                             mail_form["message"],
-                                             mail_form["from"],
-                                             to_send,
-                                             connection=ses_backend)
+                # handling only specific fail event, e.g. unconfigured sending domain code: 7001
+                email(request, get_connection("django_ses.SESBackend"))
             except BadHeaderError:
                 return HttpResponse("Invalid header found.")
             except Exception:
                 return HttpResponse("Something went wrong. Contact admin.")
-            else:
-                if send_success_cnt == 1:
-                    return HttpResponse("Send was successful.")
-                else:
-                    return HttpResponse("Send was NOT successful.")
         return render(request, "mail/mail.html", {"form":form})
     return render(request, "mail/mail.html", {"form":form})
