@@ -13,6 +13,7 @@ Failover trigger of primary email(SparkPost) provider is simulated by having an 
 Backup provider is AWS SES.
 
 List of files modified by me:
+
 https://github.com/yhamacnu/challenge_email_service/blob/main/docker-compose.yml
 https://github.com/yhamacnu/challenge_email_service/blob/main/app/Dockerfile
 https://github.com/yhamacnu/challenge_email_service/blob/main/app/requirements.txt
