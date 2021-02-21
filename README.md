@@ -9,4 +9,4 @@ Almost, no effort has been invested/implemented in the frontend: https://github.
 
 The request handler is implemented as a view function, that processes the email template form. Ther rudimentary failover is also handled there.
 Fail trigger of primary email(SparkPost) provider is simulated by having an account with an non-configured/non-verified sending domain, that reports code 7001 and raises SparkPostAPIException. 
-Backup provider is AWS SES
+Backup provider is AWS SES.
